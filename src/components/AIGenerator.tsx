@@ -170,18 +170,40 @@ RESPOND ONLY WITH VALID JSON:
           responseText = response.message.content;
         } else if ((response as Record<string, unknown>).content) {
           responseText = (response as Record<string, unknown>).content as string;
+        } else if ((response as Record<string, unknown>).text) {
+          responseText = (response as Record<string, unknown>).text as string;
+        } else if (Array.isArray(response)) {
+          // Handle array responses
+          const firstItem = response[0];
+          if (firstItem?.message?.content) {
+            responseText = firstItem.message.content;
+          } else if (typeof firstItem === 'string') {
+            responseText = firstItem;
+          }
         } else {
+          // Try to stringify and use as-is
           responseText = JSON.stringify(response);
         }
       }
 
-      // Extract JSON from response
+      if (!responseText) {
+        console.error('Empty response from AI:', response);
+        throw new Error('Empty response from AI');
+      }
+
+      // Extract JSON from response - try to find the JSON object
       const jsonMatch = responseText.match(/\{[\s\S]*\}/);
       if (jsonMatch) {
-        const result = JSON.parse(jsonMatch[0]);
-        setContent(result);
+        try {
+          const result = JSON.parse(jsonMatch[0]);
+          setContent(result);
+        } catch (parseErr) {
+          console.error('JSON parse error:', parseErr, 'Text:', jsonMatch[0].substring(0, 200));
+          throw new Error('Could not parse AI response as JSON');
+        }
       } else {
-        throw new Error('Could not parse AI response');
+        console.error('No JSON found in response:', responseText.substring(0, 200));
+        throw new Error('Could not find JSON in AI response');
       }
     } catch (err) {
       console.error('Generation error:', err);
