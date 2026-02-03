@@ -226,14 +226,115 @@ export default function Home() {
                   <AnalyticsChart data={analyticsData} />
 
                   {videos.length > 0 && (
-                    <div>
-                      <h2 className="mb-4 text-xl font-bold text-white">Recent Videos</h2>
-                      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                        {videos.slice(0, 4).map((video) => (
-                          <VideoCard key={video.id} video={video} />
-                        ))}
+                    <>
+                      {/* Top Videos by Likes */}
+                      <div className="rounded-2xl border border-gray-800 bg-gray-900/50 p-6">
+                        <div className="mb-4 flex items-center gap-3">
+                          <div className="rounded-xl bg-gradient-to-r from-pink-500 to-rose-500 p-2">
+                            <ThumbsUp className="h-5 w-5 text-white" />
+                          </div>
+                          <h2 className="text-xl font-bold text-white">Top Videos by Likes</h2>
+                        </div>
+                        <div className="space-y-3">
+                          {[...videos]
+                            .sort((a, b) => parseInt(b.statistics.likeCount || '0') - parseInt(a.statistics.likeCount || '0'))
+                            .slice(0, 5)
+                            .map((video, index) => (
+                              <a
+                                key={video.id}
+                                href={`https://youtube.com/watch?v=${video.id}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-center gap-4 rounded-xl border border-gray-700 bg-gray-800/50 p-3 transition-all hover:border-pink-500/50 hover:bg-gray-800"
+                              >
+                                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-r from-pink-500 to-rose-500 text-sm font-bold text-white">
+                                  {index + 1}
+                                </div>
+                                <div className="relative h-16 w-28 shrink-0 overflow-hidden rounded-lg">
+                                  <Image
+                                    src={video.thumbnails.medium?.url || video.thumbnails.default?.url}
+                                    alt={video.title}
+                                    fill
+                                    className="object-cover"
+                                  />
+                                </div>
+                                <div className="min-w-0 flex-1">
+                                  <h3 className="truncate text-sm font-medium text-white">{video.title}</h3>
+                                  <div className="mt-1 flex items-center gap-4 text-xs text-gray-400">
+                                    <span className="flex items-center gap-1 text-pink-400">
+                                      <ThumbsUp size={12} />
+                                      {formatNumber(video.statistics.likeCount || '0')} likes
+                                    </span>
+                                    <span className="flex items-center gap-1">
+                                      <Eye size={12} />
+                                      {formatNumber(video.statistics.viewCount || '0')} views
+                                    </span>
+                                  </div>
+                                </div>
+                              </a>
+                            ))}
+                        </div>
                       </div>
-                    </div>
+
+                      {/* Top Videos by Views */}
+                      <div className="rounded-2xl border border-gray-800 bg-gray-900/50 p-6">
+                        <div className="mb-4 flex items-center gap-3">
+                          <div className="rounded-xl bg-gradient-to-r from-blue-500 to-cyan-500 p-2">
+                            <Eye className="h-5 w-5 text-white" />
+                          </div>
+                          <h2 className="text-xl font-bold text-white">Top Videos by Views</h2>
+                        </div>
+                        <div className="space-y-3">
+                          {[...videos]
+                            .sort((a, b) => parseInt(b.statistics.viewCount || '0') - parseInt(a.statistics.viewCount || '0'))
+                            .slice(0, 5)
+                            .map((video, index) => (
+                              <a
+                                key={video.id}
+                                href={`https://youtube.com/watch?v=${video.id}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-center gap-4 rounded-xl border border-gray-700 bg-gray-800/50 p-3 transition-all hover:border-blue-500/50 hover:bg-gray-800"
+                              >
+                                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 text-sm font-bold text-white">
+                                  {index + 1}
+                                </div>
+                                <div className="relative h-16 w-28 shrink-0 overflow-hidden rounded-lg">
+                                  <Image
+                                    src={video.thumbnails.medium?.url || video.thumbnails.default?.url}
+                                    alt={video.title}
+                                    fill
+                                    className="object-cover"
+                                  />
+                                </div>
+                                <div className="min-w-0 flex-1">
+                                  <h3 className="truncate text-sm font-medium text-white">{video.title}</h3>
+                                  <div className="mt-1 flex items-center gap-4 text-xs text-gray-400">
+                                    <span className="flex items-center gap-1 text-blue-400">
+                                      <Eye size={12} />
+                                      {formatNumber(video.statistics.viewCount || '0')} views
+                                    </span>
+                                    <span className="flex items-center gap-1">
+                                      <ThumbsUp size={12} />
+                                      {formatNumber(video.statistics.likeCount || '0')} likes
+                                    </span>
+                                  </div>
+                                </div>
+                              </a>
+                            ))}
+                        </div>
+                      </div>
+
+                      {/* Recent Videos */}
+                      <div>
+                        <h2 className="mb-4 text-xl font-bold text-white">Recent Videos</h2>
+                        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                          {videos.slice(0, 4).map((video) => (
+                            <VideoCard key={video.id} video={video} />
+                          ))}
+                        </div>
+                      </div>
+                    </>
                   )}
                 </div>
               )}
