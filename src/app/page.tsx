@@ -50,6 +50,14 @@ export default function Home() {
 
   const fetchChannelData = useCallback(async () => {
     if (!session?.accessToken) return;
+
+    // Check if there's a token refresh error
+    if ((session as { error?: string }).error === 'RefreshAccessTokenError') {
+      console.error('Token refresh failed, please sign in again');
+      signIn('google');
+      return;
+    }
+
     setLoading(true);
     try {
       const channel = await getChannelStats(session.accessToken);
