@@ -104,36 +104,51 @@ export default function AIGenerator({ channelInfo, videos }: AIGeneratorProps) {
         ? `Recent videos: ${videos.slice(0, 5).map(v => v.title).join(', ')}`
         : '';
 
-      const prompt = `You are an expert YouTube content strategist. Based on this channel's content, generate viral content ideas.
+      const prompt = `You are an elite YouTube growth strategist who has helped channels go from 0 to 1M subscribers. Your job is to generate FRESH, NEVER-SEEN-BEFORE content ideas that are GUARANTEED to go viral.
 
 ${nicheContext}
 ${videoContext}
 
-Generate content that matches this channel's style and niche. Provide:
+IMPORTANT RULES:
+1. Generate completely NEW and UNIQUE ideas - not generic content everyone is making
+2. Each idea must use proven viral psychology: curiosity gaps, controversy, FOMO, or shock value
+3. Titles must be scroll-stopping with numbers, power words, or questions
+4. Focus on TRENDING topics and formats that are blowing up RIGHT NOW
+5. Each idea should have realistic potential for 100K+ views
 
-1. 4 YouTube Shorts ideas (15-60 second videos)
-2. 4 Full video ideas
+Generate:
+- 5 YouTube Shorts ideas (these are 15-60 second vertical videos that can easily get millions of views)
+- 4 Full video ideas (8-15 minute videos for long-form content)
+
+Use these VIRAL formats for Shorts:
+- "Day in the life" POV
+- "Watch till the end" hooks
+- Before/After transformations
+- "I tried X for 30 days" results
+- Controversial hot takes
+- Satisfying/ASMR moments
+- Quick tutorials with surprising results
 
 RESPOND ONLY WITH VALID JSON:
 {
   "shortsIdeas": [
     {
-      "title": "🔥 Catchy title with emoji",
-      "hook": "First 2 seconds hook to grab attention",
-      "script": "Brief outline of what happens in the short",
+      "title": "🔥 Viral title with emoji (use numbers, questions, or shock value)",
+      "hook": "EXACT words to say in first 2 seconds to make viewers STOP scrolling",
+      "script": "Step-by-step what happens - make it fast-paced and engaging",
       "duration": "30s",
-      "hashtags": ["hashtag1", "hashtag2", "hashtag3", "hashtag4", "hashtag5"],
-      "trendScore": 85,
-      "format": "Tutorial"
+      "hashtags": ["trending", "viral", "fyp", "niche-specific", "topic-specific"],
+      "trendScore": 95,
+      "format": "POV/Tutorial/Challenge/etc"
     }
   ],
   "videoIdeas": [
     {
-      "title": "Full video title",
-      "hook": "Opening hook for first 30 seconds",
-      "outline": ["Introduction", "Main point 1", "Main point 2", "Conclusion with CTA"],
-      "estimatedViews": "10K-50K",
-      "trendScore": 80
+      "title": "SEO-optimized title that people are searching for",
+      "hook": "Powerful opening that hooks viewers in first 30 seconds",
+      "outline": ["Hook + Promise", "Unexpected twist or value bomb", "Main content with examples", "Massive value drop", "Strong CTA"],
+      "estimatedViews": "100K-500K",
+      "trendScore": 90
     }
   ]
 }`;
@@ -227,8 +242,8 @@ RESPOND ONLY WITH VALID JSON:
         <button
           onClick={() => setActiveTab('shorts')}
           className={`flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-all ${activeTab === 'shorts'
-              ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white'
-              : 'border border-gray-700 bg-gray-800 text-gray-400 hover:border-purple-500/50 hover:text-white'
+            ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white'
+            : 'border border-gray-700 bg-gray-800 text-gray-400 hover:border-purple-500/50 hover:text-white'
             }`}
         >
           <Video size={16} />
@@ -237,8 +252,8 @@ RESPOND ONLY WITH VALID JSON:
         <button
           onClick={() => setActiveTab('videos')}
           className={`flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-all ${activeTab === 'videos'
-              ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white'
-              : 'border border-gray-700 bg-gray-800 text-gray-400 hover:border-purple-500/50 hover:text-white'
+            ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white'
+            : 'border border-gray-700 bg-gray-800 text-gray-400 hover:border-purple-500/50 hover:text-white'
             }`}
         >
           <Lightbulb size={16} />
