@@ -104,51 +104,56 @@ export default function AIGenerator({ channelInfo, videos }: AIGeneratorProps) {
         ? `Recent videos: ${videos.slice(0, 5).map(v => v.title).join(', ')}`
         : '';
 
-      const prompt = `You are an elite YouTube growth strategist who has helped channels go from 0 to 1M subscribers. Your job is to generate FRESH, NEVER-SEEN-BEFORE content ideas that are GUARANTEED to go viral.
+      const prompt = `You are a YouTube content cloner. Your ONLY job is to analyze the EXACT title format of these videos and create NEW titles that follow the IDENTICAL pattern.
 
 ${nicheContext}
 ${videoContext}
 
-IMPORTANT RULES:
-1. Generate completely NEW and UNIQUE ideas - not generic content everyone is making
-2. Each idea must use proven viral psychology: curiosity gaps, controversy, FOMO, or shock value
-3. Titles must be scroll-stopping with numbers, power words, or questions
-4. Focus on TRENDING topics and formats that are blowing up RIGHT NOW
-5. Each idea should have realistic potential for 100K+ views
+CRITICAL ANALYSIS - Study these titles EXACTLY:
+1. What is the EXACT title structure? (e.g., "[Topic] [Action]" or "When [someone] [does something]")
+2. What specific words/phrases appear repeatedly?
+3. Do they use CAPS, emojis, punctuation?
+4. What is the title length pattern?
+5. What EXACT format are they using? (memes, edits, compilations, etc.)
+
+STRICT RULES:
+- Your new titles MUST look like they came from the SAME CHANNEL
+- Copy the EXACT title structure and word patterns
+- If they use short meme titles, YOU use short meme titles
+- If they use "when X does Y" format, YOU use "when X does Y" format
+- DO NOT use any generic YouTube formats like:
+  * "Day in the Life of..."
+  * "I tried X for 30 days"
+  * "Everything you need to know about..."
+  * "How I..."
+  * "My journey to..."
+  * "X explained"
+- ONLY use the EXACT format their titles already use
 
 Generate:
-- 5 YouTube Shorts ideas (these are 15-60 second vertical videos that can easily get millions of views)
-- 4 Full video ideas (8-15 minute videos for long-form content)
-
-Use these VIRAL formats for Shorts:
-- "Day in the life" POV
-- "Watch till the end" hooks
-- Before/After transformations
-- "I tried X for 30 days" results
-- Controversial hot takes
-- Satisfying/ASMR moments
-- Quick tutorials with surprising results
+- 5 YouTube Shorts ideas (CLONE their title style exactly)
+- 4 Full video ideas (CLONE their title style exactly)
 
 RESPOND ONLY WITH VALID JSON:
 {
   "shortsIdeas": [
     {
-      "title": "🔥 Viral title with emoji (use numbers, questions, or shock value)",
-      "hook": "EXACT words to say in first 2 seconds to make viewers STOP scrolling",
-      "script": "Step-by-step what happens - make it fast-paced and engaging",
+      "title": "Title that matches their exact style and format",
+      "hook": "First 2 seconds hook matching their content tone",
+      "script": "Brief outline matching how their videos flow",
       "duration": "30s",
-      "hashtags": ["trending", "viral", "fyp", "niche-specific", "topic-specific"],
-      "trendScore": 95,
-      "format": "POV/Tutorial/Challenge/etc"
+      "hashtags": ["relevant", "to", "their", "specific", "niche"],
+      "trendScore": 90,
+      "format": "Their actual format type"
     }
   ],
   "videoIdeas": [
     {
-      "title": "SEO-optimized title that people are searching for",
-      "hook": "Powerful opening that hooks viewers in first 30 seconds",
-      "outline": ["Hook + Promise", "Unexpected twist or value bomb", "Main content with examples", "Massive value drop", "Strong CTA"],
-      "estimatedViews": "100K-500K",
-      "trendScore": 90
+      "title": "Title matching their naming style",
+      "hook": "Opening that fits their video style",
+      "outline": ["Matching", "Their", "Video", "Structure"],
+      "estimatedViews": "50K-200K",
+      "trendScore": 85
     }
   ]
 }`;
