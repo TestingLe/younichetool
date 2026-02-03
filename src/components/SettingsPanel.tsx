@@ -6,7 +6,6 @@ import { Settings, Key, Bell, Palette, Save, Check, AlertCircle } from 'lucide-r
 export default function SettingsPanel() {
   const [apiKeys, setApiKeys] = useState({
     youtube: '',
-    openai: '',
   });
   const [notifications, setNotifications] = useState({
     emailAlerts: true,
@@ -58,25 +57,10 @@ export default function SettingsPanel() {
                   </a>
                 </p>
               </div>
-              <div>
-                <label className="mb-2 block text-sm text-gray-400">OpenAI API Key</label>
-                <input
-                  type="password"
-                  value={apiKeys.openai}
-                  onChange={(e) => setApiKeys({ ...apiKeys, openai: e.target.value })}
-                  placeholder="Enter your OpenAI API key for AI features"
-                  className="w-full rounded-lg border border-gray-700 bg-gray-800 px-4 py-3 text-white placeholder-gray-500 outline-none transition-colors focus:border-yellow-500"
-                />
-                <p className="mt-1 text-xs text-gray-500">
-                  Get your API key from{' '}
-                  <a
-                    href="https://platform.openai.com/api-keys"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-yellow-500 hover:underline"
-                  >
-                    OpenAI Platform
-                  </a>
+              <div className="rounded-lg border border-purple-500/30 bg-purple-500/10 p-4">
+                <p className="text-sm text-purple-300">
+                  <strong>🤖 AI Features:</strong> Powered by Puter AI - No API key required!
+                  AI content generation works out of the box.
                 </p>
               </div>
             </div>
@@ -110,12 +94,10 @@ export default function SettingsPanel() {
                       }
                       className="peer sr-only"
                     />
-                    <div className={`h-6 w-11 rounded-full transition-colors ${
-                      notifications[item.key as keyof typeof notifications] ? 'bg-blue-500' : 'bg-gray-600'
-                    }`} />
-                    <div className={`absolute left-1 top-1 h-4 w-4 rounded-full bg-white transition-transform ${
-                      notifications[item.key as keyof typeof notifications] ? 'translate-x-5' : ''
-                    }`} />
+                    <div className={`h-6 w-11 rounded-full transition-colors ${notifications[item.key as keyof typeof notifications] ? 'bg-blue-500' : 'bg-gray-600'
+                      }`} />
+                    <div className={`absolute left-1 top-1 h-4 w-4 rounded-full bg-white transition-transform ${notifications[item.key as keyof typeof notifications] ? 'translate-x-5' : ''
+                      }`} />
                   </div>
                 </label>
               ))}
@@ -131,9 +113,8 @@ export default function SettingsPanel() {
               {['Dark', 'Light', 'System'].map((theme) => (
                 <button
                   key={theme}
-                  className={`rounded-lg border border-gray-700 bg-gray-800 p-4 text-center transition-all hover:border-purple-500/50 ${
-                    theme === 'Dark' ? 'border-purple-500 ring-2 ring-purple-500/20' : ''
-                  }`}
+                  className={`rounded-lg border border-gray-700 bg-gray-800 p-4 text-center transition-all hover:border-purple-500/50 ${theme === 'Dark' ? 'border-purple-500 ring-2 ring-purple-500/20' : ''
+                    }`}
                 >
                   <p className="font-medium text-white">{theme}</p>
                 </button>
