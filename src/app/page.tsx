@@ -26,6 +26,9 @@ import AIChat from '@/components/AIChat';
 import { ChannelInfo, Video as VideoType } from '@/types/youtube';
 import { formatNumber, getChannelStats, getChannelVideos } from '@/lib/youtube';
 
+// Helper to get a reliable thumbnail URL (mqdefault always exists)
+const safeThumbnail = (url: string) => url.replace(/(?:hq|sd|maxres)default/, 'mqdefault');
+
 const generateMockAnalytics = () => {
   const data = [];
   const today = new Date();
@@ -254,7 +257,7 @@ export default function Home() {
                                 </div>
                                 <div className="relative h-16 w-28 shrink-0 overflow-hidden rounded-lg">
                                   <Image
-                                    src={video.thumbnails.medium?.url || video.thumbnails.default?.url}
+                                    src={safeThumbnail(video.thumbnails.medium?.url || video.thumbnails.default?.url)}
                                     alt={video.title}
                                     fill
                                     className="object-cover"

@@ -10,7 +10,13 @@ interface VideoCardProps {
 }
 
 export default function VideoCard({ video }: VideoCardProps) {
-  const thumbnailUrl = video.thumbnails.maxres?.url || video.thumbnails.high?.url || video.thumbnails.medium?.url || video.thumbnails.default?.url;
+  // Use mqdefault which is always available; hqdefault returns 404 for some videos
+  const getThumbnailUrl = () => {
+    const url = video.thumbnails.medium?.url || video.thumbnails.default?.url || '';
+    // Replace hqdefault/sddefault/maxresdefault with mqdefault as fallback
+    return url.replace(/(?:hq|sd|maxres)default/, 'mqdefault');
+  };
+  const thumbnailUrl = getThumbnailUrl();
 
   return (
     <a

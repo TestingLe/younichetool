@@ -188,19 +188,21 @@ RESPOND ONLY WITH VALID JSON:
         responseText = response;
       } else if (response && typeof response === 'object') {
         // Handle object response with message.content
-        if (response.message && response.message.content) {
+        if (response.message && typeof response.message.content === 'string') {
           responseText = response.message.content;
-        } else if ((response as Record<string, unknown>).content) {
+        } else if ((response as Record<string, unknown>).content && typeof (response as Record<string, unknown>).content === 'string') {
           responseText = (response as Record<string, unknown>).content as string;
-        } else if ((response as Record<string, unknown>).text) {
+        } else if ((response as Record<string, unknown>).text && typeof (response as Record<string, unknown>).text === 'string') {
           responseText = (response as Record<string, unknown>).text as string;
         } else if (Array.isArray(response)) {
           // Handle array responses
           const firstItem = response[0];
-          if (firstItem?.message?.content) {
+          if (firstItem?.message?.content && typeof firstItem.message.content === 'string') {
             responseText = firstItem.message.content;
           } else if (typeof firstItem === 'string') {
             responseText = firstItem;
+          } else {
+            responseText = JSON.stringify(response);
           }
         } else {
           // Try to stringify and use as-is
@@ -208,7 +210,10 @@ RESPOND ONLY WITH VALID JSON:
         }
       }
 
-      if (!responseText) {
+      // Ensure responseText is always a string
+      responseText = String(responseText || '');
+
+      if (!responseText || responseText === 'undefined' || responseText === 'null') {
         console.error('Empty response from AI:', response);
         throw new Error('Empty response from AI');
       }
@@ -220,7 +225,7 @@ RESPOND ONLY WITH VALID JSON:
           const result = JSON.parse(jsonMatch[0]);
           setContent(result);
         } catch (parseErr) {
-          console.error('JSON parse error:', parseErr, 'Text:', jsonMatch[0].substring(0, 200));
+          console.error('JSON parse error:', parseErr, 'Text:', responseText.substring(0, 200));
           throw new Error('Could not parse AI response as JSON');
         }
       } else {

@@ -150,11 +150,14 @@ Respond helpfully. Use markdown formatting (bold, bullets, numbered lists). Be s
       let responseText = '';
       if (typeof response === 'string') {
         responseText = response;
-      } else if (response?.message?.content) {
+      } else if (response?.message?.content && typeof response.message.content === 'string') {
         responseText = response.message.content;
       } else if (response && typeof response === 'object') {
         responseText = JSON.stringify(response);
       }
+
+      // Ensure it's always a string
+      responseText = String(responseText || '');
 
       const assistantMsg: ChatMessage = {
         id: (Date.now() + 1).toString(),
@@ -190,8 +193,9 @@ Respond helpfully. Use markdown formatting (bold, bullets, numbered lists). Be s
   };
 
   const formatMessageContent = (content: string) => {
-    // Basic markdown-like formatting
-    return content
+    // Safety: ensure content is a string
+    const text = String(content || '');
+    return text
       .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
       .replace(/\*(.*?)\*/g, '<em>$1</em>')
       .replace(/^(\d+\.\s)/gm, '<span class="text-purple-400 font-bold">$1</span>')
