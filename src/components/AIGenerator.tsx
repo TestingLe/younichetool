@@ -190,6 +190,8 @@ RESPOND ONLY WITH VALID JSON:
         // Handle object response with message.content
         if (response.message && typeof response.message.content === 'string') {
           responseText = response.message.content;
+        } else if (response.message && Array.isArray(response.message.content)) {
+          responseText = response.message.content.map((c: any) => c.text || '').join('\n');
         } else if ((response as Record<string, unknown>).content && typeof (response as Record<string, unknown>).content === 'string') {
           responseText = (response as Record<string, unknown>).content as string;
         } else if ((response as Record<string, unknown>).text && typeof (response as Record<string, unknown>).text === 'string') {

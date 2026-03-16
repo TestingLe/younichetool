@@ -150,8 +150,12 @@ Respond helpfully. Use markdown formatting (bold, bullets, numbered lists). Be s
       let responseText = '';
       if (typeof response === 'string') {
         responseText = response;
-      } else if (response?.message?.content && typeof response.message.content === 'string') {
-        responseText = response.message.content;
+      } else if (response?.message?.content) {
+        if (typeof response.message.content === 'string') {
+          responseText = response.message.content;
+        } else if (Array.isArray(response.message.content)) {
+          responseText = response.message.content.map((c: any) => c.text || '').join('\n');
+        }
       } else if (response && typeof response === 'object') {
         responseText = JSON.stringify(response);
       }
