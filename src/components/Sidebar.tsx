@@ -12,6 +12,8 @@ import {
   Menu,
   X,
   Youtube,
+  Upload,
+  MessageSquare,
 } from 'lucide-react';
 import { useSession, signOut } from 'next-auth/react';
 
@@ -23,8 +25,10 @@ interface SidebarProps {
 const navItems = [
   { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { id: 'videos', label: 'My Videos', icon: Video },
+  { id: 'upload', label: 'Upload', icon: Upload },
   { id: 'trending', label: 'Trending', icon: TrendingUp },
   { id: 'ai', label: 'AI Generator', icon: Sparkles },
+  { id: 'aichat', label: 'AI Chat', icon: MessageSquare },
   { id: 'settings', label: 'Settings', icon: Settings },
 ];
 

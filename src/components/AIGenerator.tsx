@@ -99,36 +99,58 @@ export default function AIGenerator({ channelInfo, videos }: AIGeneratorProps) {
     setContent(null);
 
     try {
-      const nicheContext = channelInfo ? `Channel: "${channelInfo.title}"` : 'General YouTube content';
+      const nicheContext = channelInfo
+        ? `Channel: "${channelInfo.title}"
+Subscribers: ${channelInfo.statistics.subscriberCount}
+Total Views: ${channelInfo.statistics.viewCount}
+Total Videos: ${channelInfo.statistics.videoCount}
+Channel Description: ${channelInfo.description?.substring(0, 300) || 'N/A'}`
+        : 'General YouTube content';
+
+      const avgViews = videos.length > 0
+        ? Math.round(videos.reduce((acc, v) => acc + parseInt(v.statistics.viewCount || '0'), 0) / videos.length)
+        : 0;
+
       const videoContext = videos.length > 0
-        ? `Recent videos: ${videos.slice(0, 5).map(v => v.title).join(', ')}`
+        ? `Recent videos with FULL data (study ALL of this):
+${videos.slice(0, 10).map(v => {
+          const views = parseInt(v.statistics.viewCount || '0');
+          const likes = parseInt(v.statistics.likeCount || '0');
+          const engagement = views > 0 ? ((likes / views) * 100).toFixed(2) : '0';
+          return `- Title: "${v.title}"
+  Views: ${views} | Likes: ${likes} | Engagement: ${engagement}%
+  Tags: [${(v.tags || []).slice(0, 8).join(', ')}]
+  Description: "${(v.description || '').substring(0, 120)}..."`;
+        }).join('\n')}
+
+Average views per video: ${avgViews}`
         : '';
 
-      const prompt = `You are a YouTube content cloner. Your ONLY job is to analyze the EXACT title format of these videos and create NEW titles that follow the IDENTICAL pattern.
+      const prompt = `You are a YouTube content cloner and niche expert. Study this channel's EXACT content style deeply.
 
 ${nicheContext}
+
 ${videoContext}
 
-CRITICAL ANALYSIS - Study these titles EXACTLY:
-1. What is the EXACT title structure? (e.g., "[Topic] [Action]" or "When [someone] [does something]")
-2. What specific words/phrases appear repeatedly?
-3. Do they use CAPS, emojis, punctuation?
-4. What is the title length pattern?
-5. What EXACT format are they using? (memes, edits, compilations, etc.)
+CRITICAL DEEP ANALYSIS:
+1. Study EVERY title above — what is the EXACT structure, word choice, length, capitalization, emoji usage?
+2. Study the TAGS — what niche keywords do they repeatedly use?
+3. Study the DESCRIPTIONS — what tone, call-to-actions, and style do they use?
+4. Study the ENGAGEMENT — which videos got the most views/likes? WHY?
+5. What is their content FORMAT? (memes, edits, tutorials, vlogs, reactions, compilations, etc.)
+6. What TOPICS within their niche perform best?
 
-STRICT RULES:
+STRICT CLONING RULES:
 - Your new titles MUST look like they came from the SAME CHANNEL
-- Copy the EXACT title structure and word patterns
+- Copy the EXACT title structure, word patterns, and tone
 - If they use short meme titles, YOU use short meme titles
-- If they use "when X does Y" format, YOU use "when X does Y" format
-- DO NOT use any generic YouTube formats like:
-  * "Day in the Life of..."
-  * "I tried X for 30 days"
-  * "Everything you need to know about..."
-  * "How I..."
-  * "My journey to..."
-  * "X explained"
-- ONLY use the EXACT format their titles already use
+- If they use "when X does Y" format, YOU use that format
+- Match their capitalization and punctuation style exactly
+- Tags must match their actual niche keywords
+- Estimated views must be REALISTIC based on their average of ${avgViews} views
+- A viral video for them = 3-10x their average (${avgViews * 3}-${avgViews * 10} views)
+- DO NOT use generic YouTube formats that don't match their style
+- ONLY use formats their titles already use
 
 Generate:
 - 5 YouTube Shorts ideas (CLONE their title style exactly)
@@ -152,13 +174,13 @@ RESPOND ONLY WITH VALID JSON:
       "title": "Title matching their naming style",
       "hook": "Opening that fits their video style",
       "outline": ["Matching", "Their", "Video", "Structure"],
-      "estimatedViews": "50K-200K",
+      "estimatedViews": "Realistic range based on their ${avgViews} avg",
       "trendScore": 85
     }
   ]
 }`;
 
-      const response = await window.puter.ai.chat(prompt);
+      const response = await window.puter.ai.chat(prompt, { model: 'claude-sonnet-4-20250514' });
 
       // Handle different response formats from Puter AI
       let responseText = '';

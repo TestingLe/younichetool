@@ -21,6 +21,8 @@ import VideoCard from '@/components/VideoCard';
 import TrendingSection from '@/components/TrendingSection';
 import AIGenerator from '@/components/AIGenerator';
 import SettingsPanel from '@/components/SettingsPanel';
+import VideoUpload from '@/components/VideoUpload';
+import AIChat from '@/components/AIChat';
 import { ChannelInfo, Video as VideoType } from '@/types/youtube';
 import { formatNumber, getChannelStats, getChannelVideos } from '@/lib/youtube';
 
@@ -359,7 +361,11 @@ export default function Home() {
 
               {activeTab === 'trending' && <TrendingSection />}
 
+              {activeTab === 'upload' && <VideoUpload channelInfo={channelInfo} videos={videos} />}
+
               {activeTab === 'ai' && <AIGenerator channelInfo={channelInfo} videos={videos} />}
+
+              {activeTab === 'aichat' && <AIChat channelInfo={channelInfo} videos={videos} />}
 
               {activeTab === 'settings' && <SettingsPanel />}
             </>
